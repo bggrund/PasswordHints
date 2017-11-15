@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PasswordHints"
         mc:Ignorable="d"
         Title="PasswordHints" Height="513" Width="543"
-        x:Name="mainWindow" WindowStartupLocation="CenterScreen">
+        x:Name="mainWindow" WindowStartupLocation="CenterScreen" Icon="pack://siteoforigin:,,,/lock-xxl.png">
    <Grid>
       <Grid.RowDefinitions>
          <RowDefinition Height="180"/>
