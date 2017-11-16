@@ -64,12 +64,12 @@ namespace PasswordHints
 
       private bool filter(object obj)
       {
-         AccountData item = (AccountData)obj;
          if (string.IsNullOrWhiteSpace(searchBox.Text) || searchBox.Text == placeholderText)
          {
             return true;
          }
-         else if (cbWebsite.IsChecked == true && item.Website.IndexOf(searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0)
+         AccountData item = (AccountData)obj;
+         if (cbWebsite.IsChecked == true && item.Website.IndexOf(searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0)
          {
             return true;
          }
@@ -88,6 +88,7 @@ namespace PasswordHints
          return false;
       }
 
+      private bool changingText = false;
       private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
       {
          if (!searchBox.IsLoaded)
@@ -95,7 +96,22 @@ namespace PasswordHints
             return;
          }
 
+         updateFilterAsync();
+      }
+
+      private DateTime dtBefore, dtAfter;
+      private async Task updateFilterAsync()
+      {
+         if (changingText)
+         {
+            return;
+         }
+
+         changingText = true;
+         await Task.Delay(500);
+
          updateFilter();
+         changingText = false;
       }
 
       private void updateFilter()
@@ -141,7 +157,7 @@ namespace PasswordHints
          saveAccountData();
       }
 
-      private void updateFilterEvent(object sender, RoutedEventArgs e)
+      private void searchField_CheckedChanged(object sender, RoutedEventArgs e)
       {
          if (!((FrameworkElement)sender).IsLoaded)
          {

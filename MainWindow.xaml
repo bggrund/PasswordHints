@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PasswordHints"
         mc:Ignorable="d"
-        Title="PasswordHints" Height="513" Width="543"
+        Title="PasswordHints" Height="573" Width="543"
         x:Name="mainWindow" WindowStartupLocation="CenterScreen" Icon="pack://siteoforigin:,,,/lock-xxl.png">
    <Grid>
       <Grid.RowDefinitions>
-         <RowDefinition Height="180"/>
+         <RowDefinition Height="200"/>
          <RowDefinition/>
       </Grid.RowDefinitions>
       <Grid.ColumnDefinitions>
@@ -26,22 +26,24 @@
                <Label x:Name="lblInputWebsite" Content="Website:" HorizontalAlignment="Right" Margin="0,10,0,0" VerticalAlignment="Top" Height="26" Width="55"/>
                <Label x:Name="lblInputEmail" Content="Email:" HorizontalAlignment="Right" Margin="0,40,0,0" VerticalAlignment="Top" Height="26" Width="41"/>
                <Label x:Name="lblInputUsername" Content="Username:" HorizontalAlignment="Right" Margin="0,70,0,0" VerticalAlignment="Top" Height="26" Width="66"/>
-               <Label x:Name="lblInputPasswordHint" Content="Password Hint:" HorizontalAlignment="Right" Margin="0,100,0,0" VerticalAlignment="Top"/>
-               <TextBox x:Name="txtInputWebsite" Text="{Binding Website}" Grid.Column="1" Height="23" Margin="10,13,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-               <TextBox x:Name="txtInputEmail" Text="{Binding Email}" Grid.Column="1" Height="23" Margin="10,40,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-               <TextBox x:Name="txtInputUsername" Text="{Binding Username}" Grid.Column="1" Height="23" Margin="10,70,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-               <TextBox x:Name="txtInputPasswordHint" Text="{Binding PasswordHint}" Grid.Column="1" Height="23" Margin="10,100,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-               <Button x:Name="btnAdd" Content="Add" Grid.Column="1" Margin="10,0,10,5" VerticalAlignment="Bottom" Click="btnAdd_Click"/>
+               <Label x:Name="lblInputPasswordHint" HorizontalContentAlignment="Right" Margin="0,100,0,0" VerticalAlignment="Top">
+                  <TextBlock TextAlignment="Right"><Run Text="Info/"/><LineBreak/><Run Text="Password Hint:"/></TextBlock>
+               </Label>
+               <TextBox x:Name="txtInputWebsite" Text="{Binding Website}" Grid.Column="1" Height="23" Margin="10,13,10,0" TextWrapping="Wrap" VerticalAlignment="Top" TabIndex="5"/>
+               <TextBox x:Name="txtInputEmail" Text="{Binding Email}" Grid.Column="1" Height="23" Margin="10,40,10,0" TextWrapping="Wrap" VerticalAlignment="Top" TabIndex="6"/>
+               <TextBox x:Name="txtInputUsername" Text="{Binding Username}" Grid.Column="1" Height="23" Margin="10,70,10,0" TextWrapping="Wrap" VerticalAlignment="Top" TabIndex="7"/>
+               <TextBox x:Name="txtInputPasswordHint" Text="{Binding PasswordHint}" AcceptsReturn="True" Grid.Column="1" Height="46" Margin="10,100,10,0" TextWrapping="Wrap" VerticalAlignment="Top" TabIndex="8"/>
+               <Button x:Name="btnAdd" Content="Add" Grid.Column="1" Margin="10,0,10,5" VerticalAlignment="Bottom" Click="btnAdd_Click" TabIndex="9"/>
             </Grid>
          </Border>
       </Grid>
-      <TextBox x:Name="searchBox" Height="23" Margin="10,10,4,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="Search here..." TextChanged="SearchBox_TextChanged"/>
+      <TextBox x:Name="searchBox" Height="23" Margin="10,10,4,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="Search here..." TextChanged="SearchBox_TextChanged" TabIndex="0"/>
       <GroupBox x:Name="groupBox" Header="Search Fields" Margin="10,38,4,9">
          <StackPanel>
-            <CheckBox x:Name="cbWebsite" Content="Website" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="True" Checked="updateFilterEvent" Unchecked="updateFilterEvent" />
-            <CheckBox x:Name="cbEmail" Content="Email" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="True" Checked="updateFilterEvent" Unchecked="updateFilterEvent"/>
-            <CheckBox x:Name="cbUsername" Content="Username" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="True" Checked="updateFilterEvent" Unchecked="updateFilterEvent"/>
-            <CheckBox x:Name="cbPasswordHint" Content="Password Hint" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" IsChecked="True" Checked="updateFilterEvent" Unchecked="updateFilterEvent"/>
+            <CheckBox x:Name="cbWebsite" Content="Website" HorizontalAlignment="Left" Margin="10,14,0,0" VerticalAlignment="Top" IsChecked="True" Checked="searchField_CheckedChanged" Unchecked="searchField_CheckedChanged" TabIndex="1"/>
+            <CheckBox x:Name="cbEmail" Content="Email" HorizontalAlignment="Left" Margin="10,14,0,0" VerticalAlignment="Top" IsChecked="True" Checked="searchField_CheckedChanged" Unchecked="searchField_CheckedChanged" TabIndex="2"/>
+            <CheckBox x:Name="cbUsername" Content="Username" HorizontalAlignment="Left" Margin="10,14,0,0" VerticalAlignment="Top" IsChecked="True" Checked="searchField_CheckedChanged" Unchecked="searchField_CheckedChanged" TabIndex="3"/>
+            <CheckBox x:Name="cbPasswordHint" Content="Info/Password Hint" HorizontalAlignment="Left" Margin="10,14,0,0" VerticalAlignment="Top" IsChecked="True" Checked="searchField_CheckedChanged" Unchecked="searchField_CheckedChanged" TabIndex="4"/>
          </StackPanel>
       </GroupBox>
       <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2" HorizontalScrollBarVisibility="Disabled">
@@ -49,7 +51,7 @@
             <ItemsControl Name="credentialItemsControl">
                <ItemsControl.ItemTemplate>
                   <DataTemplate>
-                     <Border BorderBrush="Gray" Grid.Row="1" Width="250" Height="140" BorderThickness="1" CornerRadius="3,3,3,3" Margin="5,5,0,0">
+                     <Border BorderBrush="Gray" Grid.Row="1" Width="250" Height="160" BorderThickness="1" CornerRadius="3,3,3,3" Margin="5,5,0,0">
                         <Grid x:Name="credentialBox" Grid.Column="1" Margin="0,0,0,0">
                            <Grid.ColumnDefinitions>
                               <ColumnDefinition Width="100"/>
@@ -58,11 +60,13 @@
                            <Label x:Name="label1" Content="Website:" HorizontalAlignment="Right" Margin="0,10,0,0" VerticalAlignment="Top" Height="26" Width="55"/>
                            <Label x:Name="label2" Content="Email:" HorizontalAlignment="Right" Margin="0,40,0,0" VerticalAlignment="Top" Height="26" Width="41"/>
                            <Label x:Name="label3" Content="Username:" HorizontalAlignment="Right" Margin="0,70,0,0" VerticalAlignment="Top" Height="26" Width="66"/>
-                           <Label x:Name="label4" Content="Password Hint:" HorizontalAlignment="Right" Margin="0,100,0,0" VerticalAlignment="Top"/>
+                           <Label x:Name="label4" HorizontalContentAlignment="Right" Margin="0,100,0,0" VerticalAlignment="Top">
+                              <TextBlock TextAlignment="Right"><Run Text="Info/"/><LineBreak/><Run Text="Password Hint:"/></TextBlock>
+                           </Label>
                            <TextBox x:Name="txtWebsite" Text="{Binding Website}" Grid.Column="1" IsReadOnly="True" Height="23" Margin="10,13,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
                            <TextBox x:Name="txtEmail" Text="{Binding Email}" Grid.Column="1" IsReadOnly="True" Height="23" Margin="10,40,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
                            <TextBox x:Name="txtUsername" Text="{Binding Username}" Grid.Column="1" IsReadOnly="True" Height="23" Margin="10,70,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-                           <TextBox x:Name="txtPasswordHint" Text="{Binding PasswordHint}" Grid.Column="1" IsReadOnly="True" Height="23" Margin="10,100,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                           <TextBox x:Name="txtPasswordHint" Text="{Binding PasswordHint}" VerticalScrollBarVisibility="Auto" Grid.Column="1" IsReadOnly="True" Height="46" Margin="10,100,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
                            <Button x:Name="btnRemove" HorizontalAlignment="Left" VerticalAlignment="Top" Width="18" Height="18" ToolTip="Remove" Margin="4,4,0,0" Click="btnRemove_Click">
                               <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-3,0,3" Height="14">
                                  <Bold>x</Bold>
