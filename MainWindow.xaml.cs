@@ -26,7 +26,7 @@ namespace PasswordHints
    {
       private string placeholderText = "Search here...";
       private string accountDataFilePath = AppDomain.CurrentDomain.BaseDirectory + "AccountData.xml";
-      private string customDataPathFile = AppDomain.CurrentDomain.BaseDirectory + "Path.txt";
+      //private string customDataPathFile = AppDomain.CurrentDomain.BaseDirectory + "Path.txt";
       private XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<AccountData>));
       private CollectionViewSource accountCollectionSource = new CollectionViewSource();
       private ICollectionView source;
@@ -47,11 +47,6 @@ namespace PasswordHints
             saveAccountData();
          }
 
-         if (!File.Exists(customDataPathFile))
-         {
-
-         }
-
          loadAccountData();
 
          source = CollectionViewSource.GetDefaultView(accountDataList);
@@ -68,6 +63,7 @@ namespace PasswordHints
          {
             return true;
          }
+
          AccountData item = (AccountData)obj;
          if (cbWebsite.IsChecked == true && item.Website.IndexOf(searchBox.Text, StringComparison.OrdinalIgnoreCase) >= 0)
          {
@@ -98,8 +94,7 @@ namespace PasswordHints
 
          updateFilterAsync();
       }
-
-      private DateTime dtBefore, dtAfter;
+      
       private async Task updateFilterAsync()
       {
          if (changingText)
@@ -144,10 +139,6 @@ namespace PasswordHints
          }
       }
 
-      private void setCustomDataPath()
-      {
-      }
-
       private void btnRemove_Click(object sender, RoutedEventArgs e)
       {
          accountDataList.Remove((AccountData)((FrameworkElement)sender).DataContext);
@@ -165,11 +156,16 @@ namespace PasswordHints
          }
          updateFilter();
       }
+
+      private void btnClearText_Click(object sender, RoutedEventArgs e)
+      {
+         searchBox.Text = string.Empty;
+         searchBox.Focus();
+      }
    }
 
    public class AccountData
    {
-      //private string website, username, email, hint;
       public string Website { get; set; }
       public string Email { get; set; }
       public string Username { get; set; }
