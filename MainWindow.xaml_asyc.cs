@@ -16,7 +16,6 @@ using System.Windows.Shapes;
 using System.Xml.Serialization;
 using System.IO;
 using System.ComponentModel;
-using System.Threading;
 
 namespace PasswordHints
 {
@@ -27,12 +26,12 @@ namespace PasswordHints
    {
       private string placeholderText = "Search here...";
       private string accountDataFilePath = AppDomain.CurrentDomain.BaseDirectory + "AccountData.xml";
+      //private string customDataPathFile = AppDomain.CurrentDomain.BaseDirectory + "Path.txt";
       private XmlSerializer serializer = new XmlSerializer(typeof(ObservableCollection<AccountData>));
+      private CollectionViewSource accountCollectionSource = new CollectionViewSource();
       private ICollectionView source;
       private ObservableCollection<AccountData> accountDataList = new ObservableCollection<AccountData>();
       private AccountData newAccountData = new AccountData();
-      private BackgroundWorker bwUpdateFilter = new BackgroundWorker();
-      private int delayFilterUpdate = 0;
 
       public MainWindow()
       {
@@ -54,10 +53,6 @@ namespace PasswordHints
          source.SortDescriptions.Add(new SortDescription("Website", ListSortDirection.Ascending));
          source.Filter = filter;
          credentialItemsControl.ItemsSource = source;
-
-         bwUpdateFilter.WorkerSupportsCancellation = true;
-         bwUpdateFilter.DoWork += BwUpdateFilter_DoWork;
-         bwUpdateFilter.RunWorkerCompleted += BwUpdateFilter_RunWorkerCompleted;
 
          searchBox.Focus();
       }
@@ -88,7 +83,9 @@ namespace PasswordHints
          }
          return false;
       }
-
+      
+      private bool keyStroke = false;
+      private bool inAsync = false;
       private void SearchBox_KeyUp(object sender, KeyEventArgs e)
       {
          if (!searchBox.IsLoaded)
@@ -96,52 +93,40 @@ namespace PasswordHints
             return;
          }
 
-         updateFilterDelayed();
-      }
-
-      private void BwUpdateFilter_DoWork(object sender, DoWorkEventArgs e)
-      {
-         Interlocked.Exchange(ref delayFilterUpdate, 0);
-         Thread.Sleep(500);
-
-         if (delayFilterUpdate == 1)
+         keyStroke = true;
+         if (!inAsync)
          {
+            updateFilterAsync();
+         }
+      }
+      
+      private async Task updateFilterAsync()
+      {
+         inAsync = true;
+         keyStroke = false;
+
+         await Task.Delay(500);
+
+         if (keyStroke)
+         {
+            inAsync = false;
             return;
          }
 
-         Dispatcher.Invoke(updateFilter);
-      }
-
-      private void BwUpdateFilter_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-      {
-         if (delayFilterUpdate == 1)
-         {
-            bwUpdateFilter.RunWorkerAsync();
-         }
+         updateFilter();
+         inAsync = false;
       }
 
       private void updateFilter()
       {
-         using (source.DeferRefresh())
-         {
-            source.Filter = filter;
-         }
-      }
-
-      private void updateFilterDelayed()
-      {
-         Interlocked.Exchange(ref delayFilterUpdate, 1);
-         if (!bwUpdateFilter.IsBusy)
-         {
-            bwUpdateFilter.RunWorkerAsync();
-         }
+         source.Filter = filter;
       }
 
       private void btnAdd_Click(object sender, RoutedEventArgs e)
       {
          accountDataList.Add(new AccountData(txtInputWebsite.Text, txtInputEmail.Text, txtInputUsername.Text, txtInputPasswordHint.Text));
-         
-         updateFilterDelayed();
+
+         updateFilter();
 
          saveAccountData();
       }
@@ -166,7 +151,7 @@ namespace PasswordHints
       {
          accountDataList.Remove((AccountData)((FrameworkElement)sender).DataContext);
 
-         updateFilterDelayed();
+         updateFilter();
 
          saveAccountData();
       }
@@ -177,16 +162,13 @@ namespace PasswordHints
          {
             return;
          }
-
-         updateFilterDelayed();
+         updateFilter();
       }
 
       private void btnClearText_Click(object sender, RoutedEventArgs e)
       {
          searchBox.Text = string.Empty;
-
-         updateFilterDelayed();
-
+         updateFilter();
          searchBox.Focus();
       }
    }

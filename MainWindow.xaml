@@ -42,7 +42,7 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="Auto"/>
          </Grid.ColumnDefinitions>
-         <TextBox Grid.Column="0" x:Name="searchBox" TextWrapping="Wrap" Text="Search here..." TextChanged="SearchBox_TextChanged" TabIndex="0" Grid.ColumnSpan="2"/>
+         <TextBox Grid.Column="0" x:Name="searchBox" TextWrapping="Wrap" Text="Search here..." KeyUp="SearchBox_KeyUp" TabIndex="0" Grid.ColumnSpan="2"/>
          <Button Name="btnClearText" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="23" Height="23" Click="btnClearText_Click">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-3,0,3" Height="14">
                <Bold>x</Bold>
