@@ -162,6 +162,14 @@ namespace PasswordHints
          }
       }
 
+      private void btnClear_Click(object sender, RoutedEventArgs e)
+      {
+         txtInputWebsite.Text = "";
+         txtInputEmail.Text = "";
+         txtInputUsername.Text = "";
+         txtInputPasswordHint.Text = "";
+      }
+
       private void btnRemove_Click(object sender, RoutedEventArgs e)
       {
          accountDataList.Remove((AccountData)((FrameworkElement)sender).DataContext);
@@ -188,6 +196,46 @@ namespace PasswordHints
          updateFilterDelayed();
 
          searchBox.Focus();
+      }
+
+      private void txtWebsite_TextChanged(object sender, TextChangedEventArgs e)
+      {
+         AccountData account = (AccountData)((FrameworkElement)sender).DataContext;
+         account.Website = ((TextBox)sender).Text;
+
+         updateFilterDelayed();
+
+         saveAccountData();
+      }
+
+      private void txtEmail_TextChanged(object sender, TextChangedEventArgs e)
+      {
+         AccountData account = (AccountData)((FrameworkElement)sender).DataContext;
+         account.Email = ((TextBox)sender).Text;
+
+         updateFilterDelayed();
+
+         saveAccountData();
+      }
+
+      private void txtUsername_TextChanged(object sender, TextChangedEventArgs e)
+      {
+         AccountData account = (AccountData)((FrameworkElement)sender).DataContext;
+         account.Username = ((TextBox)sender).Text;
+
+         updateFilterDelayed();
+
+         saveAccountData();
+      }
+
+      private void txtPasswordHint_TextChanged(object sender, TextChangedEventArgs e)
+      {
+         AccountData account = (AccountData)((FrameworkElement)sender).DataContext;
+         account.PasswordHint = ((TextBox)sender).Text;
+
+         updateFilterDelayed();
+
+         saveAccountData();
       }
    }
 
