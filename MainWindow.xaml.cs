@@ -68,6 +68,21 @@ namespace PasswordHints
             SearchTermTextBox.Text = string.Empty;
         }
 
+        private void CollapseButton_Click(object sender, RoutedEventArgs e)
+        {
+            TextBlock content = (TextBlock)(((Button)sender).Content);
+            if (content.Text == "v")
+            {
+                NewItemGroupBox.Height = 25;
+                content.Text = ">";
+            }
+            else
+            {
+                NewItemGroupBox.Height = double.NaN;
+                content.Text = "v";
+            }
+        }
+
         /*
 private bool filter(object obj)
 {

@@ -5,9 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PasswordHints"
         mc:Ignorable="d"
-        Title="PasswordHints" Height="656" Width="560"
+        Title="PasswordHints" 
+        Height="760" Width="660"
+        MinHeight="556" MinWidth="355"
         x:Name="mainWindow" WindowStartupLocation="CenterScreen" Icon="pack://siteoforigin:,,,/lock-xxl.png"
         FocusManager.FocusedElement="{Binding ElementName=SearchTermTextBox}">
+    <!-- Resources -->
     <Window.Resources>
         <Style TargetType="{x:Type CheckBox}">
             <Setter Property="Margin" Value="0 5 5 0"/>
@@ -15,20 +18,39 @@
         <Style TargetType="{x:Type Button}">
             <Setter Property="Margin" Value="5 5 5 0"/>
         </Style>
-        <Style x:Key="AccountDataTextBlockStyle" TargetType="{x:Type TextBlock}">
+        <Style x:Key="NewAccountDataTextBlockStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="Padding" Value="1"/>
             <Setter Property="Margin" Value="0 5 5 0"/>
-            <Setter Property="Height" Value="20"/>
+            <Setter Property="Height" Value="25"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
         </Style>
-        <Style x:Key="AccountDataTextBoxStyle" TargetType="{x:Type TextBox}">
+        <Style x:Key="NewAccountDataTextBoxStyle" TargetType="{x:Type TextBox}">
             <Setter Property="Padding" Value="1"/>
             <Setter Property="Margin" Value="0 5 5 0"/>
-            <Setter Property="Height" Value="20"/>
+            <Setter Property="Height" Value="25"/>
+        </Style>
+        <Style x:Key="AccountDataTextBlockStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="Padding" Value="0 6"/>
+            <Setter Property="Margin" Value="0 5 5 0"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="AccountDataTextBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Margin" Value="0 5 5 0"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
         <Style TargetType="{x:Type GroupBox}">
             <Setter Property="Margin" Value="5 0"/>
         </Style>
+        <ControlTemplate x:Key="CollapseButton" TargetType="Button">
+            <Border HorizontalAlignment="{TemplateBinding HorizontalAlignment}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" 
+                    Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding Background}" BorderThickness="0">
+                <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+            </Border>
+        </ControlTemplate>
     </Window.Resources>
     
     <Grid>
@@ -41,32 +63,65 @@
             <!-- Menu -->
             <Menu>
                 <MenuItem Header="File">
-                    <MenuItem Header="Choose Account Data File..." Command="{Binding AccountDataCollectionViewModel.ChooseAccountDataFileCommand}"/>
+                    <MenuItem Header="Choose account data file..." Command="{Binding AccountDataCollectionViewModel.ChooseAccountDataFileCommand}"/>
                 </MenuItem>
             </Menu>
 
-            <GroupBox Header="New Item" Padding="0 0 0 5">
+            <!-- New Item Group Box -->
+            <GroupBox x:Name="NewItemGroupBox" Header="New Item" Padding="0 0 0 5" Height="25">
+                <!--GroupBox.Style>
+                    <Style TargetType="GroupBox">
+                        <Setter Property="Height" Value="25"/>
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsPressed, ElementName=CollapseButton}" Value="True"/>
+                                    <Condition Binding="{Binding Text, ElementName=CollapseButtonTextBlock}" Value="v"/>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="Height" Value="25"/>
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsPressed, ElementName=CollapseButton}" Value="True"/>
+                                    <Condition Binding="{Binding Text, ElementName=CollapseButtonTextBlock}" Value="&gt;"/>
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="Height" Value="Auto"/>
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </GroupBox.Style-->
                 <StackPanel>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="90"/>
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <StackPanel>
-                            <TextBlock Style="{StaticResource AccountDataTextBlockStyle}" Text="Website:"/>
-                            <TextBlock Style="{StaticResource AccountDataTextBlockStyle}" Text="Email:"/>
-                            <TextBlock Style="{StaticResource AccountDataTextBlockStyle}" Text="Username:"/>
-                            <TextBlock Style="{StaticResource AccountDataTextBlockStyle}" Text="PasswordHint:"/>
+                            <TextBlock Style="{StaticResource NewAccountDataTextBlockStyle}" Text="Website:"/>
+                            <TextBlock Style="{StaticResource NewAccountDataTextBlockStyle}" Text="Email:"/>
+                            <TextBlock Style="{StaticResource NewAccountDataTextBlockStyle}" Text="Username:"/>
+                            <TextBlock Style="{StaticResource NewAccountDataTextBlockStyle}" TextAlignment="Right" Height="Auto">
+                                            <Run Text="Misc Info/"/><LineBreak/><Run Text="Password Hint:"/>
+                            </TextBlock>
+                            <!--TextBlock Style="{StaticResource NewAccountDataTextBlockStyle}" Text="PasswordHint:"/-->
                         </StackPanel>
                         <StackPanel Grid.Column="1">
-                            <TextBox Style="{StaticResource AccountDataTextBoxStyle}" 
-                                 Text="{Binding AccountDataViewModel.Website, UpdateSourceTrigger=PropertyChanged}"/>
-                            <TextBox Style="{StaticResource AccountDataTextBoxStyle}" 
-                                 Text="{Binding AccountDataViewModel.Email, UpdateSourceTrigger=PropertyChanged}"/>
-                            <TextBox Style="{StaticResource AccountDataTextBoxStyle}" 
-                                 Text="{Binding AccountDataViewModel.Username, UpdateSourceTrigger=PropertyChanged}"/>
-                            <TextBox Style="{StaticResource AccountDataTextBoxStyle}" 
-                                 Text="{Binding AccountDataViewModel.PasswordHint, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox Style="{StaticResource NewAccountDataTextBoxStyle}" 
+                                     Text="{Binding AccountDataViewModel.Website, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox Style="{StaticResource NewAccountDataTextBoxStyle}" 
+                                     Text="{Binding AccountDataViewModel.Email, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox Style="{StaticResource NewAccountDataTextBoxStyle}" 
+                                     Text="{Binding AccountDataViewModel.Username, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox Style="{StaticResource NewAccountDataTextBoxStyle}" 
+                                     Text="{Binding AccountDataViewModel.PasswordHint, UpdateSourceTrigger=PropertyChanged}"
+                                     Height="44"
+                                     VerticalScrollBarVisibility="Auto"
+                                     AcceptsReturn="True"
+                                     AcceptsTab="True"/>
                         </StackPanel>
                     </Grid>
                     <Grid>
@@ -74,8 +129,9 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        
+
                         <Button Content="Clear Fields" 
+                                Height="25"
                                 Command="{Binding AccountDataViewModel.ClearFieldsCommand}"/>
                         <Button Grid.Column="1" 
                                 Content="Add Item"
@@ -85,9 +141,9 @@
                 </StackPanel>
             </GroupBox>
 
+            <!-- Search Group Box -->
             <GroupBox Header="Search">
                 <StackPanel>
-                    <!-- SearchBox -->
                     <Grid>
                         <TextBox Text="{Binding AccountDataCollectionViewModel.SearchText, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" Height="25" VerticalAlignment="Center" VerticalContentAlignment="Center" x:Name="SearchTermTextBox" Margin="5"/>
                         <TextBlock IsHitTestVisible="False" Text="Search Here" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="DarkGray">
@@ -118,6 +174,29 @@
             </GroupBox>
         </StackPanel>
         
+        <!-- New Item Collapse/Show Button (need below group box so it appears on top) -->
+        <Button Template="{StaticResource CollapseButton}"
+                x:Name="CollapseButton"
+                Click="CollapseButton_Click"
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                Margin="0 20 0 0"
+                Padding="0 0 3 3">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#11333388"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+            <TextBlock x:Name="CollapseButtonTextBlock" Margin="0 -2 0 2" Text="&gt;" FontWeight="Bold" VerticalAlignment="Center"/>
+        </Button>
+
         <!-- Item Collection -->
         <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" Margin="5">
             <WrapPanel FlowDirection="LeftToRight" Orientation="Horizontal">
@@ -129,7 +208,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border BorderBrush="Gray" Width="250" Height="160" BorderThickness="1" CornerRadius="3,3,3,3" Margin="5,5,0,0">
+                            <Border BorderBrush="Gray" Width="300" Height="200" BorderThickness="1" CornerRadius="3,3,3,3" Margin="5,5,0,0">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="100"/>
@@ -147,15 +226,16 @@
                                         <TextBlock Text="Email:" Style="{StaticResource AccountDataTextBlockStyle}"/>
                                         <TextBlock Text="Username:" Style="{StaticResource AccountDataTextBlockStyle}"/>
                                         <TextBlock Style="{StaticResource AccountDataTextBlockStyle}" TextAlignment="Right" Height="Auto">
-                                        <Run Text="Misc Info/"/><LineBreak/><Run Text="Password Hint:"/>
+                                            <Run Text="Misc Info/"/><LineBreak/><Run Text="Password Hint:"/>
                                         </TextBlock>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Margin="0 10 0 0">
-                                        <TextBox FontSize="9" Text="{Binding Website}" Style="{StaticResource AccountDataTextBoxStyle}"/>
-                                        <TextBox FontSize="9" Text="{Binding Email}" Style="{StaticResource AccountDataTextBoxStyle}"/>
-                                        <TextBox FontSize="9" Text="{Binding Username}" Style="{StaticResource AccountDataTextBoxStyle}"/>
-                                        <TextBox FontSize="9" Text="{Binding PasswordHint}" Style="{StaticResource AccountDataTextBoxStyle}" 
-                                            VerticalScrollBarVisibility="Auto" Height="60" TextWrapping="Wrap"/>
+                                        <TextBox FontSize="12" Text="{Binding Website}" Style="{StaticResource AccountDataTextBoxStyle}"/>
+                                        <TextBox FontSize="12" Text="{Binding Email}" Style="{StaticResource AccountDataTextBoxStyle}"/>
+                                        <TextBox FontSize="12" Text="{Binding Username}" Style="{StaticResource AccountDataTextBoxStyle}"/>
+                                        <TextBox FontSize="12" Text="{Binding PasswordHint}" Style="{StaticResource AccountDataTextBoxStyle}" 
+                                                 VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top" Height="72" 
+                                                 TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
