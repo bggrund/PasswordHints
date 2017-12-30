@@ -180,6 +180,11 @@ namespace PasswordHints
             AccountDataViewModel accountData = item as AccountDataViewModel;
             Items.Add(new AccountDataViewModel(accountData.Website, accountData.Email, accountData.Username, accountData.PasswordHint));
 
+            SaveAccountData();
+        }
+
+        public void SaveAccountData()
+        {
             AccountDataCollection.SaveAccountData(AccountDataFilePath, Items.Select(i => new AccountData(i.Website, i.Email, i.Username, i.PasswordHint)).ToList());
         }
 

@@ -104,6 +104,11 @@ namespace PasswordHints
             }
         }
 
+        private void SaveAccountData(object sender, RoutedEventArgs e)
+        {
+            ((WindowViewModel)DataContext).AccountDataCollectionViewModel.SaveAccountData();
+        }
+
         /*
 private bool filter(object obj)
 {
