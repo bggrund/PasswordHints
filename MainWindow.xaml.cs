@@ -17,6 +17,7 @@ using System.Xml.Serialization;
 using System.IO;
 using System.ComponentModel;
 using System.Threading;
+using System.Windows.Media.Animation;
 
 namespace PasswordHints
 {
@@ -70,16 +71,36 @@ namespace PasswordHints
 
         private void CollapseButton_Click(object sender, RoutedEventArgs e)
         {
-            TextBlock content = (TextBlock)(((Button)sender).Content);
-            if (content.Text == "v")
+            Image content = (Image)(((Button)sender).Content);
+            if (content.Source == (BitmapImage)FindResource("DownTriangle"))
             {
-                NewItemGroupBox.Height = 25;
-                content.Text = ">";
+                Storyboard sb = new Storyboard();
+
+                DoubleAnimation anim = new DoubleAnimation(NewItemGroupBox.MinHeight, new Duration(new TimeSpan(0, 0, 0, 0, 700)));
+                Storyboard.SetTargetProperty(anim, new PropertyPath("Height"));
+                anim.DecelerationRatio = 0.8;
+
+                sb.Children.Add(anim);
+
+                sb.Begin(NewItemGroupBox);
+
+                //NewItemGroupBox.Height = NewItemGroupBox.MinHeight;
+                content.Source = (BitmapImage)FindResource("RightTriangle");
             }
             else
             {
-                NewItemGroupBox.Height = double.NaN;
-                content.Text = "v";
+                Storyboard sb = new Storyboard();
+
+                DoubleAnimation anim = new DoubleAnimation(NewItemGroupBox.MaxHeight, new Duration(new TimeSpan(0, 0, 0, 0, 700)));
+                Storyboard.SetTargetProperty(anim, new PropertyPath("Height"));
+                anim.DecelerationRatio = 0.8;
+
+                sb.Children.Add(anim);
+
+                sb.Begin(NewItemGroupBox);
+
+                //NewItemGroupBox.Height = NewItemGroupBox.MaxHeight;
+                content.Source = (BitmapImage)FindResource("DownTriangle");
             }
         }
 

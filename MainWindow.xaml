@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:PasswordHints"
         mc:Ignorable="d"
         Title="PasswordHints" 
-        Height="760" Width="660"
-        MinHeight="556" MinWidth="355"
-        x:Name="mainWindow" WindowStartupLocation="CenterScreen" Icon="pack://siteoforigin:,,,/lock-xxl.png"
+        Height="794" Width="660"
+        MinHeight="590" MinWidth="355"
+        x:Name="mainWindow" WindowStartupLocation="CenterScreen" Icon="pack://application:,,,/lock_white_fill.png"
         FocusManager.FocusedElement="{Binding ElementName=SearchTermTextBox}">
     <!-- Resources -->
     <Window.Resources>
@@ -51,6 +51,8 @@
                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
             </Border>
         </ControlTemplate>
+        <BitmapImage x:Key="DownTriangle" UriSource="pack://application:,,,/triangle_down.png"/>
+        <BitmapImage x:Key="RightTriangle" UriSource="pack://application:,,,/triangle_right.png"/>
     </Window.Resources>
     
     <Grid>
@@ -66,34 +68,9 @@
                     <MenuItem Header="Choose account data file..." Command="{Binding AccountDataCollectionViewModel.ChooseAccountDataFileCommand}"/>
                 </MenuItem>
             </Menu>
-
+            
             <!-- New Item Group Box -->
-            <GroupBox x:Name="NewItemGroupBox" Header="New Item" Padding="0 0 0 5" Height="25">
-                <!--GroupBox.Style>
-                    <Style TargetType="GroupBox">
-                        <Setter Property="Height" Value="25"/>
-                        <Style.Triggers>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding IsPressed, ElementName=CollapseButton}" Value="True"/>
-                                    <Condition Binding="{Binding Text, ElementName=CollapseButtonTextBlock}" Value="v"/>
-                                </MultiDataTrigger.Conditions>
-                                <MultiDataTrigger.Setters>
-                                    <Setter Property="Height" Value="25"/>
-                                </MultiDataTrigger.Setters>
-                            </MultiDataTrigger>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding IsPressed, ElementName=CollapseButton}" Value="True"/>
-                                    <Condition Binding="{Binding Text, ElementName=CollapseButtonTextBlock}" Value="&gt;"/>
-                                </MultiDataTrigger.Conditions>
-                                <MultiDataTrigger.Setters>
-                                    <Setter Property="Height" Value="Auto"/>
-                                </MultiDataTrigger.Setters>
-                            </MultiDataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </GroupBox.Style-->
+            <GroupBox x:Name="NewItemGroupBox" Header="New Item" Padding="0 0 0 5" Height="25" MinHeight="25" MaxHeight="197">
                 <StackPanel>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -189,12 +166,12 @@
                     <Setter Property="Background" Value="Transparent"/>
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#11333388"/>
+                            <Setter Property="Background" Value="#09333388"/>
                         </Trigger>
                     </Style.Triggers>
                 </Style>
             </Button.Style>
-            <TextBlock x:Name="CollapseButtonTextBlock" Margin="0 -2 0 2" Text="&gt;" FontWeight="Bold" VerticalAlignment="Center"/>
+            <Image Source="{StaticResource RightTriangle}" Stretch="Uniform" Height="15"/>
         </Button>
 
         <!-- Item Collection -->
