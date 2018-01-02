@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -125,6 +126,8 @@ namespace PasswordHints
             }
         }
 
+        public int RemoveItemDelayMs { get; set; } = 0;
+
         #endregion
 
         #region Constructor
@@ -164,8 +167,10 @@ namespace PasswordHints
         /// Removes account data item from <see cref="Items"/>
         /// </summary>
         /// <param name="item"><see cref="AccountDataViewModel"/> to remove</param>
-        private void RemoveItem(object item)
+        private async void RemoveItem(object item)
         {
+            await Task.Delay(RemoveItemDelayMs);
+
             Items.Remove(item as AccountDataViewModel);
 
             AccountDataCollection.SaveAccountData(AccountDataFilePath, Items.Select(i => new AccountData(i.Website, i.Email, i.Username, i.PasswordHint)).ToList());
