@@ -72,17 +72,18 @@ namespace PasswordHints
         private void CollapseButton_Click(object sender, RoutedEventArgs e)
         {
             Image content = (Image)(((Button)sender).Content);
+            FrameworkElement element = (FrameworkElement)FindName(((Button)sender).Tag.ToString());
             if (content.Source == (BitmapImage)FindResource("DownTriangle"))
             {
                 Storyboard sb = new Storyboard();
 
-                DoubleAnimation anim = new DoubleAnimation(NewItemGroupBox.MinHeight, new Duration(new TimeSpan(0, 0, 0, 0, 700)));
+                DoubleAnimation anim = new DoubleAnimation(element.MinHeight, new Duration(new TimeSpan(0, 0, 0, 0, 700)));
                 Storyboard.SetTargetProperty(anim, new PropertyPath("Height"));
                 anim.DecelerationRatio = 0.8;
 
                 sb.Children.Add(anim);
 
-                sb.Begin(NewItemGroupBox);
+                sb.Begin(element);
 
                 //NewItemGroupBox.Height = NewItemGroupBox.MinHeight;
                 content.Source = (BitmapImage)FindResource("RightTriangle");
@@ -91,13 +92,13 @@ namespace PasswordHints
             {
                 Storyboard sb = new Storyboard();
 
-                DoubleAnimation anim = new DoubleAnimation(NewItemGroupBox.MaxHeight, new Duration(new TimeSpan(0, 0, 0, 0, 700)));
+                DoubleAnimation anim = new DoubleAnimation(element.MaxHeight, new Duration(new TimeSpan(0, 0, 0, 0, 700)));
                 Storyboard.SetTargetProperty(anim, new PropertyPath("Height"));
                 anim.DecelerationRatio = 0.8;
 
                 sb.Children.Add(anim);
 
-                sb.Begin(NewItemGroupBox);
+                sb.Begin(element);
 
                 //NewItemGroupBox.Height = NewItemGroupBox.MaxHeight;
                 content.Source = (BitmapImage)FindResource("DownTriangle");
@@ -107,6 +108,26 @@ namespace PasswordHints
         private void SaveAccountData(object sender, RoutedEventArgs e)
         {
             ((WindowViewModel)DataContext).AccountDataCollectionViewModel.SaveAccountData();
+        }
+
+        private void RemoveItemButtonClick(object sender, RoutedEventArgs e)
+        {
+            int animationDurationMs = 500;
+
+            // Set RemoveItemDelayMs in AccountDataCollectionViewModel so that it knows how long to delay before removing item from collection
+            ((WindowViewModel)DataContext).AccountDataCollectionViewModel.RemoveItemDelayMs = animationDurationMs;
+
+            Border border = (Border)((Grid)((FrameworkElement)sender).Parent).Parent;
+
+            Storyboard sb = new Storyboard();
+
+            DoubleAnimation anim = new DoubleAnimation(0, new Duration(new TimeSpan(0, 0, 0, 0, animationDurationMs)));
+            Storyboard.SetTargetProperty(anim, new PropertyPath("Opacity"));
+            anim.DecelerationRatio = 0.8;
+
+            sb.Children.Add(anim);
+
+            sb.Begin(border);
         }
 
         /*
