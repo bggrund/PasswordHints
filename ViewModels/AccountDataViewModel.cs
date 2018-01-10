@@ -30,6 +30,12 @@ namespace PasswordHints
             set { passwordHint = value; CommandManager.InvalidateRequerySuggested(); }
         }
 
+        public double BorderHeight { get; set; }
+        public double Height { get; set; }
+
+        public double BorderWidth { get; set; }
+        public double Width { get; set; }
+
         public ICommand ClearFieldsCommand { get; set; }
 
         public AccountDataViewModel()

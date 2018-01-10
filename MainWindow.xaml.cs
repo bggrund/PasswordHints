@@ -64,12 +64,12 @@ namespace PasswordHints
             searchBox.Focus();*/
         }
 
-        private void btnClearText_Click(object sender, RoutedEventArgs e)
+        public void btnClearText_Click(object sender, RoutedEventArgs e)
         {
             SearchTermTextBox.Text = string.Empty;
         }
 
-        private void CollapseButton_Click(object sender, RoutedEventArgs e)
+        public void CollapseButton_Click(object sender, RoutedEventArgs e)
         {
             Image content = (Image)(((Button)sender).Content);
             FrameworkElement element = (FrameworkElement)FindName(((Button)sender).Tag.ToString());
