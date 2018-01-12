@@ -147,7 +147,7 @@
         </StackPanel>
 
         <!-- Item Collection -->
-        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" Margin="5 5 0 5">
+        <ScrollViewer Style="{StaticResource ScrollViewer}" Visibility="Collapsed" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" Margin="5 5 0 5">
             <WrapPanel FlowDirection="LeftToRight" Orientation="Horizontal">
                 <ItemsControl x:Name="AccountDataItemsControl" ItemsSource="{Binding AccountDataCollectionViewModel.CollectionView, Mode=TwoWay}">
                     <ItemsControl.ItemsPanel>
@@ -167,9 +167,10 @@
                                             Command="{Binding DataContext.AccountDataCollectionViewModel.RemoveItemCommand, ElementName=mainWindow}"
                                             HorizontalAlignment="Left" VerticalAlignment="Top" Width="18" Height="18" ToolTip="Remove" Margin="4,4,0,0"
                                             Click="RemoveItemButtonClick">
-                                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-3,0,3" Height="14">
-                                            <Bold>x</Bold>
-                                        </TextBlock>
+                                        <Image Source="{StaticResource Close}" />
+                                    </Button>
+                                    <Button VerticalAlignment="Top" Width="18" Height="18" ToolTip="Remove" Margin="22,4,0,0">
+                                        <Image Source="{StaticResource Maximize}" />
                                     </Button>
                                     <Grid Margin="0 10">
                                         <Grid.RowDefinitions>
@@ -210,7 +211,56 @@
                 </ItemsControl>
             </WrapPanel>
         </ScrollViewer>
-        
+        <Border x:Name="AccountDataItem" Grid.Row="1" BorderBrush="Gray" BorderThickness="1" CornerRadius="3,3,3,3" Margin="5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Button CommandParameter="{Binding}"
+                                            Command="{Binding DataContext.AccountDataCollectionViewModel.RemoveItemCommand, ElementName=mainWindow}"
+                                            HorizontalAlignment="Left" VerticalAlignment="Top" Width="18" Height="18" ToolTip="Remove" Margin="4,4,0,0"
+                                            Click="RemoveItemButtonClick">
+                    <Image Source="{StaticResource Close}" />
+                </Button>
+                <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="18" Height="18" ToolTip="Remove" Margin="22,4,0,0">
+                    <Image Source="{StaticResource Maximize}" />
+                </Button>
+                <Grid Margin="0 10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Website:" Style="{StaticResource AccountDataTextBlockStyle}"/>
+                    <TextBlock Grid.Row="1" Text="Email:" Style="{StaticResource AccountDataTextBlockStyle}"/>
+                    <TextBlock Grid.Row="2" Text="Username:" Style="{StaticResource AccountDataTextBlockStyle}"/>
+                    <TextBlock Grid.Row="3" Style="{StaticResource AccountDataTextBlockStyle}"
+                                                   TextAlignment="Right"
+                                                   Height="Auto"
+                                                   VerticalAlignment="Top">
+                                            <Run Text="Misc Info/"/><LineBreak/><Run Text="Password Hint:"/>
+                    </TextBlock>
+                </Grid>
+                <Grid Grid.Column="1" Margin="0 10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBox Grid.Row="0" FontSize="12" Text="{Binding Website}" Style="{StaticResource AccountDataTextBoxStyle}" LostFocus="SaveAccountData"/>
+                    <TextBox Grid.Row="1" FontSize="12" Text="{Binding Email}" Style="{StaticResource AccountDataTextBoxStyle}" LostFocus="SaveAccountData"/>
+                    <TextBox Grid.Row="2" FontSize="12" Text="{Binding Username}" Style="{StaticResource AccountDataTextBoxStyle}" LostFocus="SaveAccountData"/>
+                    <TextBox Grid.Row="3" FontSize="12" Text="{Binding PasswordHint}" Style="{StaticResource AccountDataTextBoxStyle}" 
+                                                 VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top" Height="Auto" 
+                                                 TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True"
+                                                 LostFocus="SaveAccountData"/>
+                </Grid>
+            </Grid>
+        </Border>
+
     </Grid>
     
    <!--

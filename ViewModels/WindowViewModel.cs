@@ -9,12 +9,14 @@ namespace PasswordHints
     public class WindowViewModel
     {
         public AccountDataCollectionViewModel AccountDataCollectionViewModel { get; set; }
-        public AccountDataViewModel AccountDataViewModel { get; set; }
+        public AccountDataViewModel NewAccountDataViewModel { get; set; }
+        public AccountDataViewModel SelectedAccountDataViewModel { get; set; }
 
         public WindowViewModel()
         {
             AccountDataCollectionViewModel = new AccountDataCollectionViewModel();
-            AccountDataViewModel = new AccountDataViewModel();
+            NewAccountDataViewModel = new AccountDataViewModel();
+            SelectedAccountDataViewModel = new AccountDataViewModel();
         }
     }
 }
