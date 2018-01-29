@@ -5,10 +5,8 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Colors.xaml" />
     </ResourceDictionary.MergedDictionaries>
-    
-    <Style x:Key="CheckBox" TargetType="{x:Type CheckBox}">
-        <Setter Property="Background" Value="{Binding BackgroundDarkBrush}"/>
-        <Setter Property="Foreground" Value="{Binding ForegroundDarkBrush}"/>
+
+    <!--<Style x:Key="CheckBox" TargetType="{x:Type CheckBox}">
         <Setter Property="Margin" Value="0 5 5 0"/>
     </Style>
     <Style x:Key="Button" TargetType="{x:Type Button}">
@@ -33,26 +31,26 @@
         <Setter Property="Margin" Value="5 0"/>
         <Setter Property="Background" Value="{Binding BackgroundDarkBrush}"/>
         <Setter Property="Foreground" Value="{Binding ForegroundDarkBrush}"/>
-    </Style>
-    <Style x:Key="NewAccountDataTextBlockStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
+    </Style>-->
+    <Style x:Key="NewAccountDataTextBlockStyle" TargetType="{x:Type TextBlock}">
         <Setter Property="Padding" Value="1"/>
         <Setter Property="Margin" Value="0 5 5 0"/>
         <Setter Property="Height" Value="25"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
     </Style>
-    <Style x:Key="NewAccountDataTextBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBase}">
+    <Style x:Key="NewAccountDataTextBoxStyle" TargetType="{x:Type TextBox}">
         <Setter Property="Padding" Value="1"/>
         <Setter Property="Margin" Value="0 5 5 0"/>
         <Setter Property="Height" Value="25"/>
     </Style>
-    <Style x:Key="AccountDataTextBlockStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockBase}">
+    <Style x:Key="AccountDataTextBlockStyle" TargetType="{x:Type TextBlock}">
         <Setter Property="Padding" Value="0 6"/>
         <Setter Property="Margin" Value="0 5 5 0"/>
         <Setter Property="Height" Value="30"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
-    <Style x:Key="AccountDataTextBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBase}">
+    <Style x:Key="AccountDataTextBoxStyle" TargetType="{x:Type TextBox}">
         <Setter Property="Margin" Value="0 5 5 0"/>
         <Setter Property="Height" Value="30"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
