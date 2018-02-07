@@ -36,6 +36,8 @@ namespace PasswordHints
 
         public string AccountDataFilePath { get; set; }
 
+        public bool ItemAdded { get; set; }
+
         /// <summary>
         /// List of account data items
         /// </summary>
@@ -182,10 +184,14 @@ namespace PasswordHints
         /// <param name="item"><see cref="AccountDataViewModel"/> to add</param>
         private void AddItem(object item)
         {
+            ItemAdded = false;
+
             AccountDataViewModel accountData = item as AccountDataViewModel;
             Items.Add(new AccountDataViewModel(accountData.Website, accountData.Email, accountData.Username, accountData.PasswordHint));
 
             SaveAccountData();
+
+            ItemAdded = true;
         }
 
         public void SaveAccountData()

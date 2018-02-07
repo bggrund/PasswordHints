@@ -62,4 +62,33 @@
                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
         </Border>
     </ControlTemplate>
+    <ControlTemplate x:Key="NotificationBoxTemplate" TargetType="TextBox">
+        <Grid IsHitTestVisible="False" Margin="0 -40 0 0"  HorizontalAlignment="Center" Opacity="{TemplateBinding Opacity}">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Border CornerRadius="10" HorizontalAlignment="Center" Padding="5" Background="LightGray" BorderBrush="Gray" BorderThickness="1">
+                <TextBlock x:Name="NotificationText" Margin="3" Text="{TemplateBinding Text}" TextAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <Path Grid.Row="1" HorizontalAlignment="Center" Margin="0 -1 0 0" Fill="LightGray" Stroke="Gray">
+                <Path.Data>
+                    <PathGeometry>
+                        <PathGeometry.Figures>
+                            <PathFigureCollection>
+                                <PathFigure IsClosed="False" StartPoint="20,0">
+                                    <PathFigure.Segments>
+                                        <PathSegmentCollection>
+                                            <LineSegment Point="10,7" />
+                                            <LineSegment Point="0,0" />
+                                        </PathSegmentCollection>
+                                    </PathFigure.Segments>
+                                </PathFigure>
+                            </PathFigureCollection>
+                        </PathGeometry.Figures>
+                    </PathGeometry>
+                </Path.Data>
+            </Path>
+        </Grid>
+    </ControlTemplate>
 </ResourceDictionary>

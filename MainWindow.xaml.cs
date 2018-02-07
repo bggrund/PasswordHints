@@ -6,7 +6,7 @@ using System.Windows.Media.Animation;
 
 namespace PasswordHints
 {
-    //TODO: add notification when added item
+    //TODO: add notification when added item using template from isostotxts
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
