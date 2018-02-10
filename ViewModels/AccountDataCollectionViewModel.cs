@@ -1,8 +1,10 @@
 ﻿using Microsoft.Win32;
 using PropertyChanged;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -13,6 +15,7 @@ using System.Windows.Input;
 
 namespace PasswordHints
 {
+    // TODO: Add option to save account data to text file alongside xml
     [AddINotifyPropertyChangedInterface]
     public class AccountDataCollectionViewModel
     {
@@ -22,6 +25,9 @@ namespace PasswordHints
         private bool searchWebsite, searchEmail, searchUsername, searchPasswordHint;
         private BackgroundWorker bwUpdateFilter = new BackgroundWorker();
         private int delayFilterUpdate = 0;
+
+        private string mAccountDataFilePath;
+        private string mTxtAccountDataFilePath;
 
         #endregion
 
@@ -34,7 +40,7 @@ namespace PasswordHints
 
         #region Public Properties
 
-        public string AccountDataFilePath { get; set; }
+        public string AccountDataFilePath { get { return mAccountDataFilePath; } set { mAccountDataFilePath = value; mTxtAccountDataFilePath = value.Replace(".xml", ".txt"); } }
 
         public bool ItemAdded { get; set; }
 
@@ -62,6 +68,11 @@ namespace PasswordHints
         /// Command that calls <see cref="ChooseAccountDataFile"/>
         /// </summary>
         public ICommand ChooseAccountDataFileCommand { get; set; }
+
+        /// <summary>
+        /// Command that calls <see cref="OpenAccountDataFileLocation"/>
+        /// </summary>
+        public ICommand OpenAccountDataFileLocationCommand { get; set; }
 
         public string SearchText
         {
@@ -149,6 +160,7 @@ namespace PasswordHints
             RemoveItemCommand = new RelayCommand(RemoveItem);
             AddItemCommand = new AddItemCommand(AddItem);
             ChooseAccountDataFileCommand = new RelayCommand(ChooseAccountDataFile);
+            OpenAccountDataFileLocationCommand = new RelayCommand(OpenAccountDataFileLocation);
 
             // Initialize Properties
             SearchWebsite = SearchEmail = SearchUsername = SearchPasswordHint = true;
@@ -175,7 +187,7 @@ namespace PasswordHints
 
             Items.Remove(item as AccountDataViewModel);
 
-            AccountDataCollection.SaveAccountData(AccountDataFilePath, Items.Select(i => new AccountData(i.Website, i.Email, i.Username, i.PasswordHint)).ToList());
+            SaveAccountData();
         }
 
         /// <summary>
@@ -194,9 +206,31 @@ namespace PasswordHints
             ItemAdded = true;
         }
 
+        /// <summary>
+        /// Saves account data as sorted by <see cref="CollectionView"/>
+        /// </summary>
         public void SaveAccountData()
         {
-            AccountDataCollection.SaveAccountData(AccountDataFilePath, Items.Select(i => new AccountData(i.Website, i.Email, i.Username, i.PasswordHint)).ToList());
+            List<AccountData> sortedAccountData = new List<AccountData>();
+            foreach(AccountDataViewModel item in CollectionView)
+            {
+                sortedAccountData.Add(new AccountData(item.Website, item.Email, item.Username, item.PasswordHint));
+            }
+
+            AccountDataCollection.SaveAccountData(AccountDataFilePath, sortedAccountData);
+
+            List<string> lines = new List<string>();
+
+            foreach(AccountData data in sortedAccountData)
+            {
+                lines.Add(data.Website);
+                lines.Add(data.Email);
+                lines.Add(data.Username);
+                lines.Add(data.PasswordHint);
+                lines.Add("----");
+            }
+
+            File.WriteAllLines(mTxtAccountDataFilePath, lines);
         }
 
         /// <summary>
@@ -219,6 +253,15 @@ namespace PasswordHints
                 AccountDataFilePath = ofd.FileName;
                 File.WriteAllText(AccountDataFilePathFilePath, ofd.FileName);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameter">null parameter</param>
+        private void OpenAccountDataFileLocation(object parameter)
+        {
+            Process.Start((new FileInfo(AccountDataFilePath)).Directory.FullName);
         }
 
         /// <summary>

@@ -68,7 +68,7 @@ namespace PasswordHints
             }
         }
 
-        private void SaveAccountData(object sender, RoutedEventArgs e)
+        private void SaveAccountData(object sender, EventArgs e)
         {
             ((WindowViewModel)DataContext).AccountDataCollectionViewModel.SaveAccountData();
         }

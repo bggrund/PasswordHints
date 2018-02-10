@@ -9,7 +9,8 @@
         Height="587" Width="650"
         MinHeight="587" MinWidth="345"
         x:Name="mainWindow" WindowStartupLocation="CenterScreen" Icon="pack://application:,,,/Resources/lock_white_fill.png"
-        FocusManager.FocusedElement="{Binding ElementName=SearchTermTextBox}">
+        FocusManager.FocusedElement="{Binding ElementName=SearchTermTextBox}"
+        Closing="SaveAccountData">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="CollapseButton" TargetType="{x:Type Button}">
@@ -49,6 +50,7 @@
             <Menu Background="Transparent" Margin="0 0 0 5">
                 <MenuItem Header="File">
                     <MenuItem Header="Choose account data file..." Command="{Binding AccountDataCollectionViewModel.ChooseAccountDataFileCommand}"/>
+                    <MenuItem Header="Open account data file location" Command="{Binding AccountDataCollectionViewModel.OpenAccountDataFileLocationCommand}"/>
                 </MenuItem>
             </Menu>
 
