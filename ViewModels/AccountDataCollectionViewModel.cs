@@ -153,8 +153,8 @@ namespace PasswordHints
             // Initialize account data file path
             InitializeAccountDataFilePath();
 
-            // Initialize items
-            Items = new ObservableCollection<AccountDataViewModel>(AccountDataCollection.GetAccountData(AccountDataFilePath).Select(item => new AccountDataViewModel(item.Website, item.Email, item.Username, item.PasswordHint)));
+            // Initialize account data items
+            InitializeAccountDataItems();
 
             // Initialze commands
             RemoveItemCommand = new RelayCommand(RemoveItem);
@@ -165,10 +165,7 @@ namespace PasswordHints
             // Initialize Properties
             SearchWebsite = SearchEmail = SearchUsername = SearchPasswordHint = true;
 
-            // Initialize collection view
-            CollectionView = CollectionViewSource.GetDefaultView(Items);
-            CollectionView.SortDescriptions.Add(new SortDescription("Website", ListSortDirection.Ascending));
-            CollectionView.Filter = Filter;
+            // Initialize background worker for filtering
             bwUpdateFilter.DoWork += BwUpdateFilter_DoWork;
             bwUpdateFilter.RunWorkerCompleted += BwUpdateFilter_RunWorkerCompleted;
         }
@@ -198,12 +195,16 @@ namespace PasswordHints
         {
             ItemAdded = false;
 
-            AccountDataViewModel accountData = item as AccountDataViewModel;
-            Items.Add(new AccountDataViewModel(accountData.Website, accountData.Email, accountData.Username, accountData.PasswordHint));
+            try
+            {
+                AccountDataViewModel accountData = item as AccountDataViewModel;
+                Items.Add(new AccountDataViewModel(accountData.Website, accountData.Email, accountData.Username, accountData.PasswordHint));
 
-            SaveAccountData();
+                SaveAccountData();
 
-            ItemAdded = true;
+                ItemAdded = true;
+            }
+            catch { }
         }
 
         /// <summary>
@@ -231,10 +232,20 @@ namespace PasswordHints
             }
 
             File.WriteAllLines(mTxtAccountDataFilePath, lines);
+            /*
+            for(int i = 0; i < lines.Count; i++)
+            {
+                lines[i] = "<p>" + lines[i] + "</p>";
+            }
+
+            File.WriteAllText(mHtmlAccountDataFilePath, "<html><body>");
+            File.AppendAllLines(mHtmlAccountDataFilePath, lines);
+            File.AppendAllText(mHtmlAccountDataFilePath, "</body></html>");
+            */
         }
 
         /// <summary>
-        /// Presents file dialog for user to choose the account data file from. If the user selects a valid file, this method updates <see cref="AccountDataFilePath"/> with selected file and writes the selected file's path to <see cref="AccountDataFilePathFilePath"/>.
+        /// Presents file dialog for user to choose the account data file from. If the user selects a valid file, this method updates <see cref="AccountDataFilePath"/> with selected file, writes the selected file's path to <see cref="AccountDataFilePathFilePath"/>, and reinitializes the <see cref="Items"/> collection and its <see cref="CollectionView"/>.
         /// </summary>
         /// <param name="parameter">null parameter</param>
         private void ChooseAccountDataFile(object parameter)
@@ -252,6 +263,8 @@ namespace PasswordHints
             {
                 AccountDataFilePath = ofd.FileName;
                 File.WriteAllText(AccountDataFilePathFilePath, ofd.FileName);
+
+                InitializeAccountDataItems();
             }
         }
 
@@ -298,6 +311,20 @@ namespace PasswordHints
             {
                 AccountDataFilePath = DefaultAccountDataFilePath;
             }
+        }
+
+        /// <summary>
+        /// Reads items from <see cref="AccountDataFilePath"/> and initializes the <see cref="Items"/> collection and its <see cref="CollectionView"/>
+        /// </summary>
+        private void InitializeAccountDataItems()
+        {
+            // Initialize items
+            Items = new ObservableCollection<AccountDataViewModel>(AccountDataCollection.GetAccountData(AccountDataFilePath).Select(item => new AccountDataViewModel(item.Website, item.Email, item.Username, item.PasswordHint)));
+
+            // Initialize collection view
+            CollectionView = CollectionViewSource.GetDefaultView(Items);
+            CollectionView.SortDescriptions.Add(new SortDescription("Website", ListSortDirection.Ascending));
+            CollectionView.Filter = Filter;
         }
 
         #endregion
