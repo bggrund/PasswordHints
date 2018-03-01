@@ -15,7 +15,8 @@ using System.Windows.Input;
 
 namespace PasswordHints
 {
-    // TODO: Add option to save account data to text file alongside xml
+    // TODO:    Add item notification
+    //          Let user choose account data file path when the one in AccountDataFilePathFilePath isn't found
     [AddINotifyPropertyChangedInterface]
     public class AccountDataCollectionViewModel
     {
@@ -212,11 +213,8 @@ namespace PasswordHints
         /// </summary>
         public void SaveAccountData()
         {
-            List<AccountData> sortedAccountData = new List<AccountData>();
-            foreach(AccountDataViewModel item in CollectionView)
-            {
-                sortedAccountData.Add(new AccountData(item.Website, item.Email, item.Username, item.PasswordHint));
-            }
+            List<AccountData> sortedAccountData = new List<AccountData>(Items.Select(i => new AccountData(i.Website, i.Email, i.Username, i.PasswordHint)));
+            sortedAccountData.Sort();
 
             AccountDataCollection.SaveAccountData(AccountDataFilePath, sortedAccountData);
 

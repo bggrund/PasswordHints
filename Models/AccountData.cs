@@ -1,6 +1,8 @@
-﻿namespace PasswordHints
+﻿using System;
+
+namespace PasswordHints
 {
-    public class AccountData
+    public class AccountData : IComparable<AccountData>
     {
         #region Public Properties
 
@@ -24,6 +26,11 @@
             Email = email;
             Username = username;
             PasswordHint = passwordHint;
+        }
+
+        public int CompareTo(AccountData other)
+        {
+            return Website.CompareTo(other.Website);
         }
 
         #endregion
