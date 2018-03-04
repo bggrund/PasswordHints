@@ -102,6 +102,27 @@
                                     Content="Add Item"
                                     CommandParameter="{Binding NewAccountDataViewModel}"
                                     Command="{Binding AccountDataCollectionViewModel.AddItemCommand}"/>
+                            <TextBox Name="NotificationBox" Grid.Column="1" Template="{StaticResource NotificationBoxTemplate}" Text="Item Added!" Opacity="0">
+                                <TextBox.Style>
+                                    <Style>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding AccountDataCollectionViewModel.ItemAdded}" Value="True">
+                                                <DataTrigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation 
+                                                                Storyboard.TargetProperty="Opacity"
+                                                                From="1" To="0" Duration="0:0:3"
+                                                                DecelerationRatio="0.5"
+                                                                AccelerationRatio="0.5"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.EnterActions>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
                         </Grid>
                     </StackPanel>
                 </GroupBox>
