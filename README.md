@@ -1,4 +1,4 @@
 # PasswordHints
 Provides quick and easy password hint storage and retrieval
 
-This is one of my earliest WPF projects I developed while learning WPF
+This is one of my earliest WPF projects
